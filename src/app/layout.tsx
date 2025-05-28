@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import {store} from "./store/store"
+import AppProvider from "../components/AppProvider";
+import AuthInit from "@/components/AuthInit";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
