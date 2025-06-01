@@ -46,16 +46,18 @@ export async function LogIn(
               redirect("/dashboard");
           }else{
               redirect("/home");
-
           }
         } else {
+          const errorText = await response.text();
           return {
             message:
               response.status === 401
-                ? "Invalid Credentials!"
+                ? errorText.includes('inactive')
+                  ? "Votre compte est inactif. Veuillez contacter l'administrateur."
+                  : "Code Massar ou mot de passe incorrect"
                 : response.statusText,
-        };
-    }
+          };
+        }
 }
 
 export const refreshToken = async (

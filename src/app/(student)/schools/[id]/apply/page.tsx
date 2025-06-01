@@ -665,7 +665,7 @@ export default function SchoolApplicationPage() {
       
       // Redirect after successful submission
       setTimeout(() => {
-        router.push(applicationId ? "/applications" : "/home");
+        router.push(applicationId ? "/home/applications" : "/home");
       }, 3000);
     } catch (error) {
       console.error("Error submitting application:", error);

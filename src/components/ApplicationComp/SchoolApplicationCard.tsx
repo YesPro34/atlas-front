@@ -3,6 +3,9 @@
 import { School } from "@/app/lib/type";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import { authFetch } from "@/app/lib/authFetch";
+import { BACKEND_URL } from "@/app/lib/constants";
 
 interface SchoolApplicationCardProps {
   school: School;
@@ -10,9 +13,79 @@ interface SchoolApplicationCardProps {
 
 export default function SchoolApplicationCard({ school }: SchoolApplicationCardProps) {
   const router = useRouter();
+  const [hasApplied, setHasApplied] = useState(false);
+  const [applicationStatus, setApplicationStatus] = useState<'PENDING' | 'REGISTERED' | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    checkApplicationStatus();
+  }, [school.id]);
+
+  const checkApplicationStatus = async () => {
+    try {
+      const res = await authFetch(`${BACKEND_URL}/applications/check/${school.id}`);
+      if (res.ok) {
+        const data = await res.json();
+        setHasApplied(data.exists);
+        setApplicationStatus(data.status);
+      }
+    } catch (error) {
+      console.error("Error checking application status:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleApplyClick = () => {
-    router.push(`/schools/${school.id}/apply`);
+    if (hasApplied && applicationStatus === 'PENDING') {
+      // If the student has a pending application, allow them to modify it
+      router.push(`/schools/${school.id}/apply`);
+    } else if (!hasApplied) {
+      // If the student hasn't applied yet, let them create a new application
+      router.push(`/schools/${school.id}/apply`);
+    }
+  };
+
+  const getButtonContent = () => {
+    if (isLoading) {
+      return (
+        <>
+          <span>Chargement...</span>
+          <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin ml-2"></div>
+        </>
+      );
+    }
+
+    if (hasApplied) {
+      if (applicationStatus === 'PENDING') {
+        return (
+          <>
+            <span>Modifier la candidature</span>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+            </svg>
+          </>
+        );
+      } else {
+        return (
+          <>
+            <span>Déjà candidaté</span>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+          </>
+        );
+      }
+    }
+
+    return (
+      <>
+        <span>Postuler</span>
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </>
+    );
   };
 
   return (
@@ -50,12 +123,16 @@ export default function SchoolApplicationCard({ school }: SchoolApplicationCardP
           </div>
           <button
             onClick={handleApplyClick}
-            className="px-6 py-2 bg-[#18cb96] text-white rounded-lg hover:bg-[#15b587] transition-colors duration-300 flex items-center space-x-2 shadow-md hover:shadow-lg"
+            disabled={hasApplied && applicationStatus === 'REGISTERED'}
+            className={`px-6 py-2 rounded-lg transition-colors duration-300 flex items-center space-x-2 shadow-md hover:shadow-lg ${
+              hasApplied && applicationStatus === 'REGISTERED'
+                ? 'bg-gray-400 cursor-not-allowed'
+                : hasApplied && applicationStatus === 'PENDING'
+                ? 'bg-yellow-500 hover:bg-yellow-600 text-white'
+                : 'bg-[#18cb96] hover:bg-[#15b587] text-white'
+            }`}
           >
-            <span>Postuler</span>
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
+            {getButtonContent()}
           </button>
         </div>
       </div>

@@ -1,49 +1,43 @@
+"use client";
+
 import { authFetch } from "@/app/lib/authFetch";
 import { BACKEND_URL } from "@/app/lib/constants";
 import { School, SchoolType } from "@/app/lib/type";
 import { useEffect, useState } from "react";
 import DeleteConfirmationModal from "../DeleteModal";
-import Notification from "../Notification";
+import Toast from "../Toast";
 import CreateSchool from "./CreateSchool";
 import UpdateSchool from "./UpdateSchool";
+import ImportModal from "../ImportModal";
 
 // Create a minimal school type for unknown types
-const unknownSchoolType: SchoolType = {
+const unknownSchoolType: Partial<SchoolType> = {
   id: 'unknown',
   name: 'Type inconnu',
   code: 'UNKNOWN',
   requiresCityRanking: false,
-  allowMultipleFilieresSelection: false,
-  createdAt: new Date().toISOString(),
-  updatedAt: new Date().toISOString()
+  allowMultipleFilieresSelection: false
 };
 
 export default function SchoolsDataTable({ title }: { title: string }) {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [totalItems, setTotalItems] = useState<number>(0);
-  const itemsPerPage = 7;
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [allSchools, setAllSchools] = useState<School[]>([]); // Store all schools
+  const [showImportModal, setShowImportModal] = useState(false);
+  const [allSchools, setAllSchools] = useState<School[]>([]);
   const [schoolTypes, setSchoolTypes] = useState<SchoolType[]>([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedSchool, setSelectedSchool] = useState<School | null>(null);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedItemId, setselectedItemId] = useState<string | null>(null);
   const [selectedItemName, setselectedItemName] = useState<string>("");
-  const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const itemsPerPage = 10;
 
-  const showNotification = (message: string, type: 'success' | 'error') => {
-    setNotification({ message, type });
+  const showToast = (message: string, type: 'success' | 'error') => {
+    setToast({ message, type });
   };
-
-  useEffect(() => {
-    if (notification) {
-      const timer = setTimeout(() => setNotification(null), 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [notification]);
 
   const fetchSchools = async () => {
     try {
@@ -73,33 +67,29 @@ export default function SchoolsDataTable({ title }: { title: string }) {
       // Map school types to schools
       const schoolsWithTypes = (Array.isArray(schoolsData) ? schoolsData : []).map((school: School) => ({
         ...school,
-        type: typesData.find((type: SchoolType) => type.id === school.typeId) || unknownSchoolType
+        type: typesData.find((type: SchoolType) => type.id === school.type?.id) || unknownSchoolType
       }));
 
       setAllSchools(schoolsWithTypes);
       setSchoolTypes(typesData);
     } catch (error) {
       console.error("Error fetching data:", error);
-      showNotification("Erreur lors du chargement des données", "error");
+      showToast("Erreur lors du chargement des données", "error");
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Fetch schools only once when component mounts
   useEffect(() => {
     fetchSchools();
   }, []);
 
-  // Filter and paginate schools based on search term
   const filteredSchools = allSchools.filter(school => 
     school.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     (school.type?.name || '').toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Calculate pagination
-  const totalFilteredItems = filteredSchools.length;
-  const totalPages = Math.ceil(totalFilteredItems / itemsPerPage);
+  const totalPages = Math.ceil(filteredSchools.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedSchools = filteredSchools.slice(startIndex, startIndex + itemsPerPage);
 
@@ -114,12 +104,11 @@ export default function SchoolsDataTable({ title }: { title: string }) {
   
       if (!res.ok) throw new Error("Failed to delete");
       setShowDeleteModal(false);
-      // Refresh all schools after deletion
       fetchSchools();
-      showNotification('École supprimée avec succès', 'success');
+      showToast('École supprimée avec succès', 'success');
     } catch (error) {
       console.error("Error deleting school:", error);
-      showNotification("Échec de la suppression de l'école", 'error');
+      showToast("Échec de la suppression de l'école", 'error');
     } finally {
       setselectedItemId(null);
     }
@@ -134,145 +123,121 @@ export default function SchoolsDataTable({ title }: { title: string }) {
     setShowCreateModal(true);
   };
 
-  const handleSearch = (value: string) => {
-    setSearchTerm(value);
-    setCurrentPage(1); // Reset to first page when searching
-  };
-
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#0ab99d]"></div>
+      <div className="bg-white p-3 rounded-xl shadow-md">
+        <div className="flex justify-center items-center min-h-[400px]">
+          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#0ab99d]"></div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 sm:px-8">
-      <div className="py-8">
-        <div className="flex justify-between">
-          <h2 className="text-2xl font-semibold leading-tight">{title}</h2>
+    <div className="bg-white p-3 rounded-xl shadow-md">
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl font-bold">{title}</h2>
+        <div className="flex items-center justify-center gap-4 w-full max-w-xs">
           <button
             onClick={handleCreate}
-            className="bg-[#0ab99d] text-white px-4 py-2 rounded-lg hover:bg-[#0aa183] transition-colors"
+            className="p-2 bg-[#06b89d] text-white rounded-lg font-bold"
           >
-            Ajouter une école
+            Ajouter
           </button>
-        </div>
-
-        {/* Search */}
-        <div className="my-4">
+          <button
+            onClick={() => setShowImportModal(true)}
+            className="p-2 bg-[#06b89d] text-white rounded-lg font-bold"
+          >
+            Importer
+          </button>
           <input
             type="text"
-            placeholder="Rechercher..."
-            className="w-full sm:w-64 px-4 py-2 border rounded-lg"
+            placeholder="Rechercher une école..."
             value={searchTerm}
-            onChange={(e) => handleSearch(e.target.value)}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              setCurrentPage(1);
+            }}
+            className="px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
+      </div>
 
-        {/* Table */}
-        <div className="overflow-x-auto bg-white rounded-lg shadow">
-          <table className="min-w-full leading-normal">
-            <thead>
-              <tr>
-                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Nom
-                </th>
-                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Type
-                </th>
-                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Actions
-                </th>
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm text-left text-gray-700">
+          <thead className="bg-gray-100 uppercase text-xs text-gray-600">
+            <tr>
+              <th className="px-6 py-3">Nom</th>
+              <th className="px-6 py-3">Type</th>
+              <th className="px-6 py-3">Status</th>
+              <th className="px-6 py-3 text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {paginatedSchools.map((school) => (
+              <tr key={school.id} className="border-b hover:bg-gray-50">
+                <td className="px-6 py-4 font-medium text-gray-900">{school.name}</td>
+                <td className="px-6 py-4">
+                  <span className="px-3 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-700">
+                    {school.type?.code || 'N/A'}
+                  </span>
+                </td>
+                <td className="px-6 py-4">
+                  <span className={`px-3 py-1 text-xs font-semibold rounded-full ${
+                    school.isOpen
+                      ? "bg-green-100 text-green-700"
+                      : "bg-red-100 text-red-700"
+                  }`}>
+                    {school.isOpen ? 'OUVERT' : 'FERMÉ'}
+                  </span>
+                </td>
+                <td className="px-6 py-4 text-center">
+                  <button 
+                    onClick={() => handleEdit(school)}
+                    className="text-gray-400 hover:text-gray-800 mx-2"
+                  >
+                    <i className="fas fa-pen"></i>
+                  </button>
+                  <button 
+                    onClick={() => {
+                      setselectedItemId(school.id);
+                      setShowDeleteModal(true);
+                      setselectedItemName(school.name);
+                    }}
+                    className="text-gray-400 hover:text-gray-800 mx-2"
+                  >
+                    <i className="fas fa-trash-alt"></i>
+                  </button>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {paginatedSchools.map((school) => (
-                <tr key={school.id}>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    <div className="flex items-center">
-                      <div className="ml-3">
-                        <p className="text-gray-900 whitespace-no-wrap">
-                          {school.name}
-                        </p>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    <p className="text-gray-900 whitespace-no-wrap">
-                      {school.type?.name || 'Type inconnu'}
-                    </p>
-                  </td>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    <span
-                      className={`relative inline-block px-3 py-1 font-semibold ${
-                        school.isOpen
-                          ? "text-green-900 bg-green-200"
-                          : "text-red-900 bg-red-200"
-                      } rounded-full`}
-                    >
-                      {school.isOpen ? "Ouvert" : "Fermé"}
-                    </span>
-                  </td>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    <div className="flex space-x-3">
-                      <button
-                        onClick={() => handleEdit(school)}
-                        className="text-blue-600 hover:text-blue-900"
-                      >
-                        Modifier
-                      </button>
-                      <button
-                        onClick={() => {
-                          setselectedItemId(school.id);
-                          setselectedItemName(school.name);
-                          setShowDeleteModal(true);
-                        }}
-                        className="text-red-600 hover:text-red-900"
-                      >
-                        Supprimer
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
 
-        {/* Pagination */}
+        {/* Pagination Controls */}
         <div className="flex justify-between items-center mt-4">
+          <p className="text-sm text-gray-600">
+            Page {currentPage} sur {totalPages}
+          </p>
           <div>
-            <span className="text-gray-600">
-              Page {currentPage} sur {totalPages}
-            </span>
-          </div>
-          <div className="space-x-2">
             <button
+              className="px-3 py-1 mx-1 bg-gray-100 rounded disabled:opacity-50"
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
-              className={`px-4 py-2 rounded ${
-                currentPage === 1
-                  ? "bg-gray-300 cursor-not-allowed"
-                  : "bg-[#0ab99d] text-white hover:bg-[#0aa183]"
-              }`}
             >
               Précédent
             </button>
             <button
-              onClick={() =>
-                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-              }
+              className="px-3 py-1 mx-1 bg-gray-100 rounded disabled:opacity-50"
+              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
               disabled={currentPage === totalPages}
-              className={`px-4 py-2 rounded ${
-                currentPage === totalPages
-                  ? "bg-gray-300 cursor-not-allowed"
-                  : "bg-[#0ab99d] text-white hover:bg-[#0aa183]"
-              }`}
             >
               Suivant
             </button>
@@ -281,51 +246,51 @@ export default function SchoolsDataTable({ title }: { title: string }) {
       </div>
 
       {/* Modals */}
-      {showDeleteModal && (
-        <DeleteConfirmationModal
-          isOpen={true}
-          onClose={() => {
-            setShowDeleteModal(false);
-            setselectedItemId(null);
+      {showCreateModal && (
+        <CreateSchool
+          onClose={() => setShowCreateModal(false)}
+          onCreate={(school) => {
+            setShowCreateModal(false);
+            fetchSchools();
+            showToast('École créée avec succès', 'success');
           }}
-          onConfirm={handleDelete}
-          studentName={selectedItemName}
+          onNotification={showToast}
         />
       )}
 
       {showUpdateModal && selectedSchool && (
         <UpdateSchool
+          onClose={() => setShowUpdateModal(false)}
+          onUpdate={(school) => {
+            setShowUpdateModal(false);
+            fetchSchools();
+            showToast('École mise à jour avec succès', 'success');
+          }}
+          onNotification={showToast}
           school={selectedSchool}
-          onClose={() => {
-            setShowUpdateModal(false);
-            setSelectedSchool(null);
-          }}
-          onUpdate={(updatedSchool) => {
-            // Refresh all schools after update
-            fetchSchools();
-            setShowUpdateModal(false);
-            setSelectedSchool(null);
-          }}
-          onNotification={showNotification}
         />
       )}
 
-      {showCreateModal && (
-        <CreateSchool
-          onClose={() => setShowCreateModal(false)}
-          onCreate={(newSchool) => {
-            // Refresh all schools after creation
-            fetchSchools();
-            setShowCreateModal(false);
-          }}
-          onNotification={showNotification}
+      {showDeleteModal && (
+        <DeleteConfirmationModal
+          isOpen={showDeleteModal}
+          onClose={() => setShowDeleteModal(false)}
+          onConfirm={handleDelete}
+          studentName={selectedItemName}
         />
       )}
 
-      {notification && (
-        <Notification
-          message={notification.message}
-          type={notification.type}
+      {showImportModal && (
+        <ImportModal
+          isOpen={showImportModal}
+          onClose={() => setShowImportModal(false)}
+          onSuccess={(message) => {
+            showToast(message, 'success');
+            fetchSchools();
+          }}
+          onError={(message) => showToast(message, 'error')}
+          endpoint="/school/import"
+          title="Importer des écoles"
         />
       )}
     </div>

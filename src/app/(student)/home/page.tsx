@@ -54,38 +54,53 @@ export default function HomePage() {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-[#19154e] to-[#19154e]/90">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#18cb96] border-t-transparent"></div>
+      <div>
+        {/* Header Section */}
+        <div className="bg-gradient-to-r from-[#0ab99d] to-[#0a8b76] text-white py-12 px-4">
+          <div className="container mx-auto">
+            <h1 className="text-4xl font-bold mb-4">Écoles disponibles</h1>
+            <p className="text-lg opacity-90">
+              Découvrez les écoles qui correspondent à votre profil
+            </p>
+          </div>
+        </div>
+
+        <div className="container mx-auto px-4 py-8 -mt-6">
+          <div className="flex justify-center items-center min-h-[400px]">
+            <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#0ab99d]"></div>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#19154e] to-[#19154e]/90">
-      <div className="container mx-auto px-4 py-12">
+    <div className="bg-gray-50 min-h-screen">
+      {/* Header Section */}
+      <div className="bg-gradient-to-r from-[#0ab99d] to-[#0a8b76] text-white py-12 px-4">
+        <div className="container mx-auto">
+          <h1 className="text-4xl font-bold mb-4">Écoles disponibles</h1>
+          <p className="text-lg opacity-90">
+            Découvrez les écoles qui correspondent à votre profil
+          </p>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 py-8 -mt-6">
         {notification && (
           <Notification message={notification.message} type={notification.type} />
         )}
         
-        {/* Header Section */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-white mb-4">
-            Écoles disponibles
-          </h1>
-          <p className="text-[#18cb96] text-lg max-w-2xl mx-auto">
-            Découvrez les écoles qui correspondent à votre profil et postulez directement en ligne
-          </p>
-        </div>
-
         {/* Schools Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {schools.length === 0 ? (
-            <div className="col-span-full text-center py-12">
-              <div className="bg-white/10 rounded-lg p-8 backdrop-blur-sm">
-                <h3 className="text-2xl font-semibold text-white mb-4">
+            <div className="col-span-full">
+              <div className="bg-white rounded-lg shadow-md p-8 text-center">
+                <div className="text-6xl mb-4">🎓</div>
+                <h3 className="text-xl font-semibold text-gray-800 mb-2">
                   Aucune école disponible
                 </h3>
-                <p className="text-[#18cb96]">
+                <p className="text-gray-600">
                   Il n'y a actuellement aucune école disponible pour votre type de Bac.
                 </p>
               </div>
@@ -101,8 +116,8 @@ export default function HomePage() {
         </div>
 
         {/* Footer Section */}
-        <div className="mt-16 text-center">
-          <p className="text-white/60 text-sm">
+        <div className="mt-12 text-center">
+          <p className="text-gray-500 text-sm">
             Les écoles affichées sont basées sur votre type de Bac. Pour plus d'informations, contactez l'administration.
           </p>
         </div>
