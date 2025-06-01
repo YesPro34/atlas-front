@@ -14,7 +14,7 @@ export default function LoginPage(){
         <div className="grid grid-cols-2 h-screen font-sans">
       
         {/* Left Section - Logo and Description */}
-        <div className="bg-[rgb(24,23,29)] text-white flex flex-col  px-10 relative">
+        <div className="bg-[#19154e] text-white flex flex-col  px-10 relative">
           <div className="text-left">
             {/* Logo Placeholder */}
             <Link href="/">

@@ -42,13 +42,13 @@ export default async function NavBar() {
                 <div className="flex items-center space-x-4">
                     {/* Navigation Links - Add more as needed */}
                     <div className="hidden md:flex space-x-6">
-                        <Link href="/applications" className="text-gray-600 hover:text-[#06b89d] transition-colors">
+                        <Link href="/home/applications" className="text-gray-600 hover:text-[#06b89d] transition-colors">
                             Mes Candidatures
                         </Link>
-                        <Link href="/profile" className="text-gray-600 hover:text-[#06b89d] transition-colors">
+                        <Link href="/home/profile" className="text-gray-600 hover:text-[#06b89d] transition-colors">
                             Mon Profile
                         </Link>
-                        <Link href="/notes" className="text-gray-600 hover:text-[#06b89d] transition-colors">
+                        <Link href="/home/notes" className="text-gray-600 hover:text-[#06b89d] transition-colors">
                             Mes Notes
                         </Link>
                     </div>

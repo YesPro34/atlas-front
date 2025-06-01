@@ -2,11 +2,13 @@
 import { useState, useEffect } from "react";
 import { authFetch } from "@/app/lib/authFetch";
 import { BACKEND_URL } from "@/app/lib/constants";
-import { Application } from "@/app/lib/type";
+import { Application, School } from "@/app/lib/type";
 import Notification from "@/components/Notification";
+import ExportButton from "./ExportButton";
 
 export default function ApplicationsDataTable({ title }: { title: string }) {
   const [applications, setApplications] = useState<Application[]>([]);
+  const [schools, setSchools] = useState<School[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
@@ -19,7 +21,22 @@ export default function ApplicationsDataTable({ title }: { title: string }) {
 
   useEffect(() => {
     fetchApplications();
+    fetchSchools();
   }, []);
+
+  const fetchSchools = async () => {
+    try {
+      const res = await authFetch(`${BACKEND_URL}/school`);
+      if (!res.ok) {
+        throw new Error('Failed to fetch schools');
+      }
+      const data = await res.json();
+      setSchools(data);
+    } catch (error) {
+      console.error("Error fetching schools:", error);
+      showNotification("Erreur lors du chargement des écoles", "error");
+    }
+  };
 
   const fetchApplications = async () => {
     try {
@@ -135,7 +152,7 @@ export default function ApplicationsDataTable({ title }: { title: string }) {
 
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold">{title}</h2>
-        <div className="flex items-center justify-center gap-4 w-full max-w-xs">
+        <div className="flex items-center gap-4">
           <input
             type="text"
             placeholder="Rechercher..."
@@ -145,6 +162,11 @@ export default function ApplicationsDataTable({ title }: { title: string }) {
               setCurrentPage(1);
             }}
             className="px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-[#06b89d]"
+          />
+          <ExportButton
+            schools={schools}
+            onError={(message) => showNotification(message, "error")}
+            onSuccess={(message) => showNotification(message, "success")}
           />
         </div>
       </div>
@@ -194,16 +216,13 @@ export default function ApplicationsDataTable({ title }: { title: string }) {
                         {application.choices.map((choice, index) => (
                           <div
                             key={index}
-                            className="flex-shrink-0 flex flex-col items-center p-3 rounded-lg border border-gray-200 bg-white shadow-sm hover:shadow-md transition-shadow w-[120px]"
+                            className="flex-shrink-0 flex flex-col items-center p-2 rounded-lg border border-gray-200 bg-white shadow-sm hover:shadow-md transition-shadow w-[120px]"
                           >
                             <div className="w-6 h-6 rounded-full bg-[#0ab99d] text-white flex items-center justify-center text-sm font-medium mb-2">
                               {index + 1}
                             </div>
                             <div className="text-sm font-medium text-gray-800 text-center">
                               {choice.type === "CITY" ? choice.city?.name : choice.filiere?.name}
-                            </div>
-                            <div className="text-xs text-gray-500 mt-1">
-                              {choice.type === "CITY" ? "Ville" : "Filière"}
                             </div>
                           </div>
                         ))}

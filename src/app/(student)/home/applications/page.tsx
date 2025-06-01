@@ -163,7 +163,7 @@ export default function ApplicationsPage() {
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       {application.status === "PENDING" && (
                         <button
-                          onClick={() => router.push(`/applications/update/${application.id}`)}
+                          onClick={() => router.push(`/schools/${application.school.id}/apply?applicationId=${application.id}`)}
                           className="text-[#0ab99d] hover:text-[#0aa183] font-medium"
                         >
                           Modifier
