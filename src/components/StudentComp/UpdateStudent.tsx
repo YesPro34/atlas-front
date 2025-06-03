@@ -36,6 +36,9 @@ export default function UpdateStudent({
     svtMark: student.svtMark || 0,
     englishMark: student.englishMark || 0,
     philosophyMark: student.philosophyMark || 0,
+    comptabilityMark: student.comptabilityMark || 0,
+    economyMark: student.economyMark || 0,
+    managementMark: student.managementMark || 0,
   });
 
   useEffect(() => {

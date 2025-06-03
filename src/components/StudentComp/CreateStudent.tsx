@@ -30,6 +30,9 @@ interface CreateStudentForm {
   svtMark?: number;
   englishMark?: number;
   philosophyMark?: number;
+  comptabilityMark?: number;
+  economyMark?: number;
+  managementMark?: number;
 }
 
 export default function CreateStudent({
@@ -56,6 +59,9 @@ export default function CreateStudent({
     svtMark: 0,
     englishMark: 0,
     philosophyMark: 0,
+    comptabilityMark: 0,
+    economyMark: 0,
+    managementMark: 0,
   });
 
   useEffect(() => {

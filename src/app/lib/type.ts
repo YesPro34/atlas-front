@@ -105,6 +105,9 @@ export type Student = {
   svtMark?: number;
   englishMark?: number;
   philosophyMark?: number;
+  comptabilityMark?: number;
+  economyMark?: number;
+  managementMark?: number;
 };
 
 export interface ApplicationChoice {
