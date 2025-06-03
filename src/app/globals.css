@@ -91,6 +91,8 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --primary-color: #06b89d;
+  --primary-hover: #059881;
 }
 
 .dark {
@@ -126,7 +128,6 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 }
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -134,4 +135,62 @@
   body {
     @apply bg-background text-foreground;
   }
+  html {
+    scroll-behavior: smooth;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-gray-900;
+  }
 }
+
+@layer components {
+  .container {
+    @apply max-w-7xl mx-auto px-4;
+  }
+
+  .btn {
+    @apply inline-flex items-center bg-[#06b89d] text-white px-6 py-3 rounded-lg hover:bg-[#059881] transition-colors;
+  }
+
+  .section-title {
+    @apply text-3xl lg:text-4xl font-bold mb-6;
+  }
+
+  .section-subtitle {
+    @apply text-[#06b89d] text-lg font-medium block mb-4;
+  }
+}
+
+/* Custom Animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* RTL Specific Styles */
+[dir="rtl"] .rtl\:space-x-reverse > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 1;
+}
+
+[dir="rtl"] .rtl\:rotate-180 {
+  transform: rotate(180deg);
+}
+
+/* Font Awesome Fix for RTL */
+[dir="rtl"] .fa,
+[dir="rtl"] .fas,
+[dir="rtl"] .far,
+[dir="rtl"] .fab {
+  margin-left: 0.5rem;
+  margin-right: 0;
+}
+

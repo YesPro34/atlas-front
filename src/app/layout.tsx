@@ -1,28 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Noto_Sans_Arabic } from "next/font/google";
 import "./globals.css";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import {store} from "./store/store"
 import AppProvider from "../components/AppProvider";
 import AuthInit from "@/components/AuthInit";
-import { Inter } from "next/font/google";
 import "./lib/fontawesome";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-const inter = Inter({ subsets: ["latin"] });
+const notoSansArabic = Noto_Sans_Arabic({ subsets: ["arabic"] });
 
 export const metadata: Metadata = {
-  title: "Atlas Schools",
-  description: "Atlas Schools Application Platform",
+  title: "Atlas Tawjih",
+  description: "خدمات التوجيه الدراسي والمهني في المغرب",
 };
 
 export default function RootLayout({
@@ -31,12 +20,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased ${inter.className}`}
-      >
-        {children}
-      </body>
+    <html lang="ar">
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+          integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+          crossOrigin="anonymous"
+          referrerPolicy="no-referrer"
+        />
+      </head>
+      <body className={notoSansArabic.className}>{children}</body>
     </html>
   );
 }

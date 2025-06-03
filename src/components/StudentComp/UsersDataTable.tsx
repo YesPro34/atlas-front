@@ -101,7 +101,7 @@ export default function UsersDataTable({ title }: { title: string }) {
       )}
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold">{title}</h2>
-        <div className="flex items-center justify-center gap-4 w-full max-w-xs">
+        <div className="flex items-center gap-4">
           <button
             onClick={handleCreate}
             className="p-2 bg-[#06b89d] text-white rounded-lg font-bold"
@@ -122,7 +122,7 @@ export default function UsersDataTable({ title }: { title: string }) {
               setSearchTerm(e.target.value);
               setCurrentPage(1);
             }}
-            className="px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-64"
           />
         </div>
       </div>
