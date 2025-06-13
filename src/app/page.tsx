@@ -1,26 +1,409 @@
-import Link from "next/link";
+"use client"
+import { Button } from '@/components/ui/button';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faYoutube, faLinkedin, faInstagram, faFacebook } from '@fortawesome/free-brands-svg-icons';
+import { useState } from 'react';
+import Link from 'next/link';
 
-export default function Home() {
+const AtlasLandingPage: React.FC = () => {
+  const [openIndex, setOpenIndex] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
+  const faqData = [
+    {
+      question: "ما هي المزايا التي أحصل عليها من خلال خدماتكم بدلاً من التسجيل بنفسي؟",
+      answer: "التسجيل معنا يضمن لك إتمام عملية التسجيل بشكل صحيح مع المتابعة المستمرة، مما يتيح لك التركيز على دراستك والتحضير للامتحانات دون قلق. نحن نوفر لك الكثير من الوقت ونتجنب القلق المرتبط بالأخطاء التقنية أو التأخير."
+    },
+    {
+      question: "متى يجب أن أسجل للاستفادة من خدماتكم؟",
+      answer: "يفضل التسجيل في أقرب وقت ممكن لضمان الاستفادة من جميع الخدمات والمتابعة الشخصية."
+    },
+    {
+      question: "كيف يمكنني متابعة حالتي بعد التسجيل؟",
+      answer: "ستحصل على تحديثات مستمرة حول حالة تسجيلك عبر البريد الإلكتروني أو الهاتف."
+    },
+    {
+      question: "هل بدأت عملية التسجيل في المدارس الآن؟",
+      answer: "نعم، عملية التسجيل بدأت ويمكنك التواصل معنا لمعرفة التفاصيل الخاصة بكل مدرسة."
+    },
+    {
+      question: "هل يمكنني الحصول على متابعة شخصية؟",
+      answer: "بالطبع، جميع خدماتنا تشمل المتابعة الشخصية لكل تلميذ لضمان أفضل النتائج."
+    }
+  ];
   return (
-    <main className="min-h-screen bg-white flex flex-col items-center justify-center gap-4">
-      <Link 
-        href="/admin" 
-        className="text-lg font-medium text-gray-900 hover:text-[#06b89d] transition-colors"
-      >
-        Admin Dashboard
-      </Link>
-      <Link 
-        href="/student" 
-        className="text-lg font-medium text-gray-900 hover:text-[#06b89d] transition-colors"
-      >
-        Student Dashboard
-      </Link>
-      <Link 
-        href="/school" 
-        className="text-lg font-medium text-gray-900 hover:text-[#06b89d] transition-colors"
-      >
-        School Dashboard
-      </Link>
-    </main>
+    <div className="font-sans text-gray-900">
+      {/* Top Bar */}
+      <div className="bg-white border-b text-sm text-gray-700">
+        <div className="container mx-auto flex flex-col md:flex-row justify-between items-center py-1 px-4 gap-2">
+        <div className="flex items-center gap-3 text-xl">
+            <a href="#" aria-label="YouTube" className="hover:text-primary"><FontAwesomeIcon icon={faYoutube} /></a>
+            <a href="#" aria-label="LinkedIn" className="hover:text-primary"><FontAwesomeIcon icon={faLinkedin} /></a>
+            <a href="#" aria-label="Instagram" className="hover:text-primary"><FontAwesomeIcon icon={faInstagram} /></a>
+            <a href="#" aria-label="Facebook" className="hover:text-primary"><FontAwesomeIcon icon={faFacebook} /></a>
+          </div>
+          <div className="flex items-center gap-4">
+            <span className="flex items-center gap-1">
+              <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="text-primary"><circle cx="12" cy="12" r="10" strokeWidth="2" /><path d="M12 8v4l3 3" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+              أكادير, المغرب
+            </span>
+            <span className="flex items-center gap-1">
+              <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="text-primary"><path d="M16 2H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z" strokeWidth="2" /><path d="M16 2v4H8V2" strokeWidth="2" /></svg>
+              atlastawjih@gmail.com
+            </span>
+            <span className="flex items-center gap-1">
+              <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="text-primary"><path d="M22 16.92V19a2 2 0 0 1-2.18 2A19.72 19.72 0 0 1 3 5.18 2 2 0 0 1 5 3h2.09a2 2 0 0 1 2 1.72c.13 1.05.37 2.07.72 3.06a2 2 0 0 1-.45 2.11l-.27.27a16 16 0 0 0 6.29 6.29l.27-.27a2 2 0 0 1 2.11-.45c.99.35 2.01.59 3.06.72A2 2 0 0 1 22 16.92z" strokeWidth="2" /></svg>
+              0703244407
+            </span>
+          </div>
+        </div>
+      </div>
+      {/* Header */}
+      <header className="bg-white shadow-md sticky top-0 z-50">
+        <div className="container mx-auto flex flex-col md:flex-row justify-between items-center p-4 gap-4">
+          {/* Left: Button */}
+          <div className="order-2 md:order-1 w-full md:w-auto flex justify-end md:justify-start">
+            <Link href="/login">
+              <Button size="sm" className="bg-primary text-white px-6 py-2 font-bold cursor-pointer">←  دخول</Button>
+            </Link>
+          </div>
+          {/* Center: Navigation */}
+          <nav className="order-3 md:order-2 w-full md:w-auto flex justify-center">
+            <ul className="flex flex-row-reverse gap-6 font-semibold text-md">
+              <li className="hover:text-primary cursor-pointer">الرئيسية</li>
+              <li className="hover:text-primary cursor-pointer">من نحن</li>
+              <li className="hover:text-primary cursor-pointer">خدمتنا</li>
+              <li className="hover:text-primary cursor-pointer">باقات</li>
+              <li className="hover:text-primary cursor-pointer">اتصل بنا</li>
+            </ul>
+          </nav>
+          {/* Right: Logo */}
+          <div className="order-1 md:order-3 w-full md:w-auto flex justify-start md:justify-end">
+            <img src="/images/logo/logo.png" alt="Logo" className="h-20 w-max" />
+          </div>
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <section className="bg-gradient-to-br from-white to-green-100 py-16">
+        <div className="container mx-auto grid md:grid-cols-2 gap-8 items-center">
+          <img src="/images/hero/hero-1.png" />
+          <div>
+            <h1 className="text-4xl font-bold leading-relaxed mb-4">
+              لماذا تحتاج إلى توجيه دراسي
+              <br />
+              <span className="text-primary">للحصول على شهادة البكالوريا؟</span>
+            </h1>
+            <p className="mb-6">نحن هنا لمساعدتك على تحديد أهدافك التعليمية ومرافقتك في جميع مراحل دراستك.</p>
+            <Button size="lg">ابدأ الآن</Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+{/* Features Section */}
+<section className="py-16 bg-white" id="features">
+  <div className="container mx-auto text-center">
+    <h2 className="text-2xl font-bold mb-10">
+      # أطلس توجيه... لأن <span className="text-primary underline underline-offset-4 decoration-2">نجاحك</span> هو هدفنا
+    </h2>
+    <div className="grid md:grid-cols-3 gap-8">
+      {/* Card 1 */}
+      <div className="bg-gray-100 p-8 rounded-xl shadow flex flex-col items-center">
+        <span className="bg-primary/10 text-primary rounded-full p-4 mb-4 text-3xl">
+          <i className="fas fa-check-circle"></i>
+        </span>
+        <h3 className="text-lg font-bold mb-2">التكفل بالترشيحات الإلكترونية والمتابعة</h3>
+        <p className="text-gray-600 text-sm">
+          نحن نتولى التسجيل الإلكتروني الأولي والنهائي في المدارس والمعاهد بالمغرب، ونتابع جميع المراحل (لوائح الانتقاء، اللوائح الرئيسية، لوائح الانتظار) ونقوم بإبلاغ المشتركين بالنتائج.
+        </p>
+      </div>
+      {/* Card 2 */}
+      <div className="bg-gray-100 p-8 rounded-xl shadow flex flex-col items-center">
+        <span className="bg-primary/10 text-primary rounded-full p-4 mb-4 text-3xl">
+          <i className="fas fa-graduation-cap"></i>
+        </span>
+        <h3 className="text-lg font-bold mb-2">التسجيل في المنح الدراسية</h3>
+        <p className="text-gray-600 text-sm">
+          نتولى التسجيل في المنح الدراسية داخل المغرب وخارجه.
+        </p>
+      </div>
+      {/* Card 3 */}
+      <div className="bg-gray-100 p-8 rounded-xl shadow flex flex-col items-center">
+        <span className="bg-primary/10 text-primary rounded-full p-4 mb-4 text-3xl">
+          <i className="fas fa-file-alt"></i>
+        </span>
+        <h3 className="text-lg font-bold mb-2">التحضير للمباريات</h3>
+        <p className="text-gray-600 text-sm">
+          نوجهكم نحو أفضل مراكز التحضير للمباريات، مع تقديم تخفيضات حصرية تصل إلى 15%.
+        </p>
+      </div>
+      {/* Card 4 */}
+      <div className="bg-gray-100 p-8 rounded-xl shadow flex flex-col items-center">
+        <span className="bg-primary/10 text-primary rounded-full p-4 mb-4 text-3xl">
+          <i className="fas fa-paper-plane"></i>
+        </span>
+        <h3 className="text-lg font-bold mb-2">توجيه حاملي شهادة BAC+2</h3>
+        <p className="text-gray-600 text-sm">
+          نقوم بمساعدة حاملي دبلومات ما بعد البكالوريا (+2)، مثل DEUG، DEUP، DUT، DEUST لمواصلة دراستهم في مدارس عليا داخل وخارج المغرب.
+        </p>
+      </div>
+      {/* Card 5 */}
+      <div className="bg-gray-100 p-8 rounded-xl shadow flex flex-col items-center">
+        <span className="bg-primary/10 text-primary rounded-full p-4 mb-4 text-3xl">
+          <i className="fas fa-globe"></i>
+        </span>
+        <h3 className="text-lg font-bold mb-2">التسجيل في برامج الهجرة إلى الولايات المتحدة</h3>
+        <p className="text-gray-600 text-sm">
+          التسجيل في برامج الهجرة إلى الولايات المتحدة، مع تزويدكم بمعلومات حول المتطلبات والشروط الأساسية.
+        </p>
+      </div>
+      {/* Card 6 */}
+      <div className="bg-gray-100 p-8 rounded-xl shadow flex flex-col items-center">
+        <span className="bg-primary/10 text-primary rounded-full p-4 mb-4 text-3xl">
+          <i className="fas fa-map-marker-alt"></i>
+        </span>
+        <h3 className="text-lg font-bold mb-2">الدراسة في فرنسا</h3>
+        <p className="text-gray-600 text-sm">
+          تستهدف خدمتنا تلاميذ السنة الثانية من البكالوريا والطلبة (ما فوق الباك) الراغبين في مواصلة دراستهم في فرنسا.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+      {/* Team Section */}
+      <section className="py-16 bg-gray-100" id="team">
+        <div className="container mx-auto grid md:grid-cols-2 gap-12 items-center">
+          {/* Text Content */}
+          <div className="text-right">
+            <span className="inline-block bg-primary/10 text-primary px-4 py-1 rounded-full mb-4 text-sm font-semibold">من نحن</span>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 leading-relaxed">
+              وفر وقتك وأموالك باختيار <span className="relative inline-block">
+                <span className="z-10 relative">فريقنا المحترف</span>
+              </span>
+            </h2>
+            <div className="text-gray-700 text-lg space-y-4 mb-8">
+              <p>
+                في قلب مدينة أكادير، تأسست <span className="font-bold text-primary">Atlas Tawjih</span> برؤية شغوفة من السيد لحسن، بهدف واضح: تمكين التلاميذ من الوصول إلى الفرص الأكاديمية الأرقى داخل المغرب وخارجه.<br />
+                في <span className="font-bold text-primary">Atlas Tawjih</span> نحن نفق كجسر إلى آفاق لا حدود لها، ونقدم أكثر من مجرد توجيه.
+              </p>
+              <p>
+                نؤمن بأن كل تلميذ وتلميذة يستحق الوصول إلى أفضل الفرص. لذلك، نقوم بتمهيد الطريق لهم من خلال دعم متكامل في اختيار التخصصات، التسجيل في الجامعات، والمتابعة الشخصية لكل تلميذ وتلميذة؛ نرشدهم في كل خطوة ليصلوا إلى أحلامهم بأمان وثقة، سواء كان الهدف هو التميز في مؤسسات مغربية أو الانفتاح على تجارب دولية.
+              </p>
+              <p>
+                واليوم، مع استمرار <span className="font-bold text-primary">Atlas Tawjih</span> في الازدهار، تظل دعوتنا: ثق بنا لنكون بوصلة في عالم مليء بالفرص. انضم إلينا في صياغة قصة نجاحك، لأن أحلامك معنا لا تعرف حدودًا.
+              </p>
+            </div>
+            <Button size="lg" className="bg-primary text-white px-8 py-3 font-bold">تواصل معنا ←</Button>
+          </div>
+          {/* Images */}
+          <div className="flex flex-col md:flex-row gap-4 items-center">
+            <div className="flex flex-col gap-4">
+              <img src="/images/team/team1.jpg" alt="Team member 1" className="rounded-xl w-40 h-56 object-cover shadow-lg" />
+              <img src="/images/team/team3.jpeg" alt="Team member 2" className="rounded-xl w-40 h-56 object-cover shadow-lg" />
+            </div>
+            <img src="/images/team/team2.png" alt="Main team" className="rounded-xl w-64 h-[370px] object-cover shadow-2xl ml-4" />
+          </div>
+        </div>
+    </section>
+
+    {/* phone number contact Section */}
+    <section
+      className="relative w-full h-[400px] flex items-center justify-center overflow-hidden"
+      style={{
+        backgroundImage: "url('/images/slicer/slicer.jpeg')", // Adjust filename as needed
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    >
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-[#23374d]/80"></div>
+      {/* Decorative SVGs (top-left, top-right, bottom-right, etc.) */}
+      <svg className="absolute left-6 top-6 w-8 h-8 text-primary" fill="none" viewBox="0 0 32 32">
+        <path d="M4 16a12 12 0 0 1 12-12" stroke="currentColor" strokeWidth="3" strokeLinecap="round"/>
+      </svg>
+      <svg className="absolute right-0 top-0 w-64 h-32" viewBox="0 0 300 100" fill="none">
+        <path d="M0,100 Q150,-50 300,100" stroke="#06b89d" strokeWidth="4" fill="none"/>
+      </svg>
+      <svg className="absolute right-16 bottom-8 w-16 h-6" viewBox="0 0 64 12" fill="none">
+        <path d="M0,6 Q8,0 16,6 T32,6 T48,6 T64,6" stroke="#fff" strokeWidth="2" fill="none"/>
+      </svg>
+      <svg className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8" viewBox="0 0 32 32" fill="none">
+        <g>
+          <circle cx="16" cy="16" r="2" fill="#fff" />
+          <circle cx="16" cy="8" r="2" fill="#fff" />
+          <circle cx="16" cy="24" r="2" fill="#fff" />
+          <circle cx="8" cy="16" r="2" fill="#fff" />
+          <circle cx="24" cy="16" r="2" fill="#fff" />
+        </g>
+      </svg>
+
+      {/* Content */}
+      <div className="relative z-10 flex flex-col items-center text-center gap-7">
+        <h2 className="text-white text-3xl md:text-5xl font-bold mb-2">تواصل معنا عبر الهاتف مباشرة</h2>
+        <div className="text-white text-3xl md:text-5xl font-bold tracking-widest">0703244407</div>
+      </div>
+    </section>
+
+    {/* Pricing Section */}
+    <section className="py-16 bg-white" id="pricing">
+      <div className="container mx-auto text-center">
+        <h2 className="text-3xl font-bold mb-10">
+          <span>باقات </span>
+          <span className="relative text-primary">
+            الاشتراك
+            <span className="absolute -bottom-1 left-0 w-full h-2 bg-primary/20 rounded-full -z-10"></span>
+          </span>
+        </h2>
+        <div className="grid md:grid-cols-4 gap-6">
+          {/* Card 1: الأداب */}
+          <div className="bg-gray-100 rounded-xl shadow-md overflow-hidden flex flex-col items-center">
+            <div className="w-full bg-[#F9A825] text-white text-lg font-bold py-2">باقة الآداب</div>
+            <div className="w-full bg-primary h-16 rounded-b-[50%] -mb-8"></div>
+            <div className="relative flex flex-col items-center w-full px-6 pt-0 pb-8">
+              <div className="relative -top-8 mb-2 flex flex-col items-center">
+                <div className="border-2 border-[#F9A825] bg-white rounded-full w-32 h-32 flex flex-col items-center justify-center text-3xl font-bold text-primary">
+                  <span>1000</span>
+                  <span className="text-base font-normal text-gray-700 mt-1">سنويا</span>
+                </div>
+              </div>
+              <h3 className="text-lg font-bold mb-2">بكالوريا شعبة علوم إنسانية و آداب</h3>
+              <ul className="text-sm mb-6 space-y-2 text-right">
+                <li className="flex items-center gap-2 text-primary"><span>✓</span>نحن من يقوم بتسجيلك في المدارس والمنح</li>
+                <li className="flex items-center gap-2 text-primary"><span>✓</span>نقوم بالمتابعة والمواكبة الشخصية للتلميذ</li>
+              </ul>
+              <Button className="bg-primary text-white w-full">اشترك الآن ←</Button>
+            </div>
+          </div>
+          {/* Card 2: العلوم التقنية */}
+          <div className="bg-gray-100 rounded-xl shadow-md overflow-hidden flex flex-col items-center">
+            <div className="w-full bg-[#F9A825] text-white text-lg font-bold py-2">باقة العلوم التقنية</div>
+            <div className="w-full bg-primary h-16 rounded-b-[50%] -mb-8"></div>
+            <div className="relative flex flex-col items-center w-full px-6 pt-0 pb-8">
+              <div className="relative -top-8 mb-2 flex flex-col items-center">
+                <div className="border-2 border-[#F9A825] bg-white rounded-full w-32 h-32 flex flex-col items-center justify-center text-3xl font-bold text-primary">
+                  <span>1500</span>
+                  <span className="text-base font-normal text-gray-700 mt-1">سنويا</span>
+                </div>
+              </div>
+              <h3 className="text-lg font-bold mb-2">بكالوريا العلوم التقنية (STE & STM)</h3>
+              <ul className="text-sm mb-6 space-y-2 text-right">
+                <li className="flex items-center gap-2 text-primary"><span>✓</span>نحن من يقوم بتسجيلك في المدارس والمنح</li>
+                <li className="flex items-center gap-2 text-primary"><span>✓</span>نقوم بالمتابعة والمواكبة الشخصية للتلميذ</li>
+              </ul>
+              <Button className="bg-primary text-white w-full">اشترك الآن ←</Button>
+            </div>
+          </div>
+          {/* Card 3: الاقتصاد */}
+          <div className="bg-gray-100 rounded-xl shadow-md overflow-hidden flex flex-col items-center">
+            <div className="w-full bg-[#F9A825] text-white text-lg font-bold py-2">باقة الاقتصاد</div>
+            <div className="w-full bg-primary h-16 rounded-b-[50%] -mb-8"></div>
+            <div className="relative flex flex-col items-center w-full px-6 pt-0 pb-8">
+              <div className="relative -top-8 mb-2 flex flex-col items-center">
+                <div className="border-2 border-[#F9A825] bg-white rounded-full w-32 h-32 flex flex-col items-center justify-center text-3xl font-bold text-primary">
+                  <span>1500</span>
+                  <span className="text-base font-normal text-gray-700 mt-1">سنويا</span>
+                </div>
+              </div>
+              <h3 className="text-lg font-bold mb-2">بكالوريا شعبة الاقتصاد والمحاسبة.</h3>
+              <ul className="text-sm mb-6 space-y-2 text-right">
+                <li className="flex items-center gap-2 text-primary"><span>✓</span>نحن من يقوم بتسجيلك في المدارس والمنح</li>
+                <li className="flex items-center gap-2 text-primary"><span>✓</span>نقوم بالمتابعة والمواكبة الشخصية للتلميذ</li>
+              </ul>
+              <Button className="bg-primary text-white w-full">اشترك الآن ←</Button>
+            </div>
+          </div>
+          {/* Card 4: العلوم */}
+          <div className="bg-[#23374d] rounded-xl shadow-md overflow-hidden flex flex-col items-center">
+            <div className="w-full bg-[#F9A825] text-white text-lg font-bold py-2">باقة العلوم</div>
+            <div className="w-full bg-primary h-16 rounded-b-[50%] -mb-8"></div>
+            <div className="relative flex flex-col items-center w-full px-6 pt-0 pb-8">
+              <div className="relative -top-8 mb-2 flex flex-col items-center">
+                <div className="border-2 border-[#F9A825] bg-white rounded-full w-32 h-32 flex flex-col items-center justify-center text-3xl font-bold text-primary">
+                  <span>2000</span>
+                  <span className="text-base font-normal text-gray-700 mt-1">سنويا</span>
+                </div>
+              </div>
+              <h3 className="text-lg font-bold mb-2 text-white">بكالوريا علوم فيزيائية، علوم الحياة والأرض، علوم رياضية</h3>
+              <ul className="text-sm mb-6 space-y-2 text-right">
+                <li className="flex items-center gap-2 text-[#F9A825]"><span>✓</span>نحن من يقوم بتسجيلك في المدارس والمنح</li>
+                <li className="flex items-center gap-2 text-[#F9A825]"><span>✓</span>نقوم بالمتابعة والمواكبة الشخصية للتلميذ</li>
+              </ul>
+              <Button className="bg-[#F9A825] text-white w-full">اشترك الآن ←</Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+      {/* FAQ Section */}
+      <section className="py-16 bg-gray-100">
+        <div className="container mx-auto">
+          <h2 className="text-2xl font-bold text-center mb-8">الأسئلة الشائعة</h2>
+          <div className="max-w mx-auto space-y-4">
+            {faqData.map((item, idx) => (
+              <div key={idx} className="rounded border overflow-hidden">
+                <button
+                  className={`w-full flex justify-between items-center px-6 py-4 text-right font-bold text-lg transition focus:outline-none ${isOpen === true ? 'bg-orange-500 text-white' : 'text-black bg-white'}`}
+                  onClick={() => {
+                    setIsOpen(!isOpen);
+                    setOpenIndex(idx);
+                  }}
+                  aria-expanded={openIndex === idx}
+                >
+                  <span className="text-2xl font-bold text-black">
+                    {openIndex === idx ? "−" : "+"}
+                  </span>
+                  <span className="text-black">{item.question}</span>
+                </button>
+                {openIndex === idx && (
+                  <div className="bg-white px-6 py-4 text-right text-lg text-[#23374d] border-t">
+                    {item.answer}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-[#232228] pt-16 pb-4 mt-16">
+      <div className="container mx-auto flex flex-col items-center">
+    {/* Logo */}
+    <img src="/images/logo/logo.png" alt="Logo" className="h-16 mb-6" />
+
+    {/* Description */}
+    <p className="text-white text-center max-w-3xl mb-6 leading-loose">
+      وفر وقتك ومالك باختيار فريقنا المحترف. يضمن مديرنا الفعّال ومستشارونا الأكفاء سير العمل بسلاسة، مما يضمن لكم تجربة فريدة من نوعها مع Atlas Tawjih.<br />
+      فريقنا بأكمله بمثابة حلفائكم في هذه الرحلة؛ نحن هنا لنستمع، نفهم، ونفتح آفاقًا جديدة لكم.
+    </p>
+
+    {/* Social Icons */}
+    <div className="flex gap-4 mb-6">
+      <a href="#" className="bg-[#393940] hover:bg-primary rounded-full p-3 text-white text-xl transition">
+        <i className="fab fa-youtube"></i>
+      </a>
+      <a href="#" className="bg-[#393940] hover:bg-primary rounded-full p-3 text-white text-xl transition">
+        <i className="fab fa-linkedin-in"></i>
+      </a>
+      <a href="#" className="bg-[#393940] hover:bg-primary rounded-full p-3 text-white text-xl transition">
+        <i className="fab fa-instagram"></i>
+      </a>
+      <a href="#" className="bg-[#393940] hover:bg-primary rounded-full p-3 text-white text-xl transition">
+        <i className="fab fa-facebook-f"></i>
+      </a>
+    </div>
+  </div>
+  {/* Bottom Bar */}
+  <div className="bg-[#232228] border-t border-[#393940] mt-4 pt-4">
+    <p className="text-center text-gray-300 text-sm">
+      Copyright © 2025 <span className="text-primary font-bold">Atlas Tawjih</span> | All Rights Reserved
+    </p>
+  </div>
+</footer>
+    </div>
   );
-}
+};
+
+export default AtlasLandingPage;
