@@ -59,6 +59,7 @@ export interface School {
   city?: string;
   cities?: City[];
   filieres?: Filiere[];
+  image?: string;
 }
 
 export interface SchoolType {

@@ -21,6 +21,8 @@ export default function SchoolApplicationCard({ school }: SchoolApplicationCardP
     checkApplicationStatus();
   }, [school.id]);
 
+  console.log(school.image);
+
   const checkApplicationStatus = async () => {
     try {
       const res = await authFetch(`${BACKEND_URL}/applications/check/${school.id}`);
@@ -93,14 +95,14 @@ export default function SchoolApplicationCard({ school }: SchoolApplicationCardP
       {/* Image Section */}
       <div className="relative h-48 w-full">
         <Image
-          src="/images/atlas-schools-Img.jpg"
+          src={school.image ? BACKEND_URL + school.image : '/images/atlas-schools-Img.jpg'}
           alt={school.name}
           fill
           className="object-cover"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#19154e]/80 to-transparent"></div>
+
       </div>
 
       {/* Content Section */}

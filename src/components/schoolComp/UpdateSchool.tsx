@@ -3,6 +3,7 @@ import { authFetch } from "@/app/lib/authFetch";
 import { BACKEND_URL } from "@/app/lib/constants";
 import { BacOption, School, SchoolType } from "@/app/lib/type";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 interface UpdateSchoolProps {
   school: School;
@@ -16,10 +17,13 @@ export default function UpdateSchool({ school, onClose, onUpdate, onNotification
   const [bacOptions, setBacOptions] = useState<BacOption[]>([]);
   const [form, setForm] = useState({
     name: school.name,
-    typeId: school.typeId,
+    typeId: (school as any).typeId || school.type?.id || '',
     isOpen: school.isOpen,
-    bacOptionIds: school.bacOptionsAllowed.map(opt => opt.id),
+    bacOptionIds: (school as any).bacOptionsAllowed?.map((opt: any) => opt.id) || [],
+    image: school.image || '',
   });
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,9 +59,34 @@ export default function UpdateSchool({ school, onClose, onUpdate, onNotification
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log("Hi");
     e.preventDefault();
     try {
-      const res = await authFetch(`${BACKEND_URL}/school/${school.id}`, {
+      let res;
+      if (imageFile) {
+        setUploading(true);
+        try {
+          const formData = new FormData();
+          formData.append('file', imageFile);
+          res = await authFetch(`${BACKEND_URL}/school/upload-image/${school.id}`, {
+            method: "POST",
+            body: formData,
+          });
+          if (!res.ok) throw new Error('Image upload failed');
+          const data = await res.json();
+          onNotification("École mise à jour avec succès", "success");
+          onUpdate(data.school);
+          setUploading(false);
+          return;
+        } catch (error) {
+          onNotification('Erreur lors du téléchargement de l\'image', 'error');
+          setUploading(false);
+          return;
+        }
+      }
+
+      // If no new image, just update other fields
+      res = await authFetch(`${BACKEND_URL}/school/${school.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -92,6 +121,14 @@ export default function UpdateSchool({ school, onClose, onUpdate, onNotification
       ...prev,
       [name]: newValue
     }));
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files && e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      setForm(prev => ({ ...prev, image: '' })); // Clear image path until upload
+    }
   };
 
   return (
@@ -162,6 +199,24 @@ export default function UpdateSchool({ school, onClose, onUpdate, onNotification
             <label className="ml-2 block text-sm text-gray-700">
               École ouverte aux candidatures
             </label>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Image de l'école</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#0ab99d] focus:ring-[#0ab99d]"
+            />
+            {(imageFile || form.image) && (
+              <img
+                src={imageFile ? URL.createObjectURL(imageFile) : form.image}
+                alt="Aperçu de l'école"
+                className="mt-2 rounded-md border h-24 object-cover"
+              />
+            )}
+            {uploading && <p className="text-sm text-gray-500 mt-1">Téléchargement de l'image...</p>}
           </div>
 
           <div className="flex justify-end space-x-3 mt-6">
