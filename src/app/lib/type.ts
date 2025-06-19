@@ -49,7 +49,6 @@ export type ApplicationStatus = "PENDING" | "REGISTERED";
 
 export type ChoiceType = "CITY" | "FILIERE";
 
-export type bacOption = "PC" | "SVT" | "SMA" | "ECO" | "SMB" | "STE" | "STM" | "SGC";
 
 export interface School {
   id: string;

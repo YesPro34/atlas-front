@@ -4,14 +4,14 @@ import { jwtVerify, SignJWT } from "jose";
 
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { bacOption, Role } from "./type";
+import { BacOption, Role } from "./type";
 
 export type Session = {
   user: {
     id: string;
     massarCode: string;
     role: Role;
-    bacOption: bacOption;
+    bacOption: BacOption;
   };
   accessToken: string;
   refreshToken: string;
