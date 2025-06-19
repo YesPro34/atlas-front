@@ -9,8 +9,9 @@ import { Student } from "@/app/lib/type";
 import DeleteConfirmationModal from "../DeleteModal";
 import CreateStudent from "./CreateStudent";
 import ImportModal from "../ImportModal";
+import type { Session } from "@/app/lib/session";
 
-export default function UsersDataTable({ title }: { title: string }) {
+export default function UsersDataTable({ title, session }: { title: string, session: Session | null }) {
   const [students, setStudents] = useState<Student[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);

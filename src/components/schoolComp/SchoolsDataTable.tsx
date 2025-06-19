@@ -9,6 +9,7 @@ import Toast from "../Toast";
 import CreateSchool from "./CreateSchool";
 import UpdateSchool from "./UpdateSchool";
 import ImportModal from "../ImportModal";
+import type { Session } from "@/app/lib/session";
 
 // Create a minimal school type for unknown types
 const unknownSchoolType: Partial<SchoolType> = {
@@ -19,7 +20,7 @@ const unknownSchoolType: Partial<SchoolType> = {
   allowMultipleFilieresSelection: false
 };
 
-export default function SchoolsDataTable({ title }: { title: string }) {
+export default function SchoolsDataTable({ title, session }: { title: string, session: Session | null }) {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [showCreateModal, setShowCreateModal] = useState(false);
