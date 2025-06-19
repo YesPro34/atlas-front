@@ -5,8 +5,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'http',
-        hostname: 'localhost',
-        port: '8080',
+        hostname: 'https://atlas-back-production.up.railway.app/',
         pathname: '/api/uploads/schoolCard/**',
       },
     ],
