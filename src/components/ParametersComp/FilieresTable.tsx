@@ -397,7 +397,7 @@ export default function FilieresTable() {
                     </SelectContent>
                   </Select>
                 ) : (
-                  filiere.bacOptionsAllowed
+                  filiere.bacOptions
                     ?.map((option: BacOption) => option.name)
                     .join(", ")
                 )}
