@@ -1,13 +1,9 @@
 "use client"
 import { authFetch } from "@/app/lib/authFetch";
 import { BACKEND_URL } from "@/app/lib/constants";
-import { bacOption, Student } from "@/app/lib/type";
+import { BacOption, Student } from "@/app/lib/type";
 import { useEffect, useState } from "react";
 
-interface BacOption {
-  id: string;
-  name: string;
-}
 
 interface UpdateStudentProps {
   student: Student;
