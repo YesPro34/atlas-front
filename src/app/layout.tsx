@@ -2,9 +2,6 @@ import type { Metadata } from "next";
 import { Noto_Sans_Arabic } from "next/font/google";
 import "./globals.css";
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import {store} from "./store/store"
-import AppProvider from "../components/AppProvider";
-import AuthInit from "@/components/AuthInit";
 import "./lib/fontawesome";
 
 const notoSansArabic = Noto_Sans_Arabic({ subsets: ["arabic"] });
