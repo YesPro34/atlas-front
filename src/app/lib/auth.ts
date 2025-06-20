@@ -85,7 +85,7 @@ export const refreshToken = async (
       await response.json();
     // update session with new tokens
     const updateRes = await fetch(
-      "http://localhost:3000/api/auth/update",
+      "https://atlas-front-steel.vercel.app/api/auth/update",
       {
         method: "POST",
         body: JSON.stringify({
