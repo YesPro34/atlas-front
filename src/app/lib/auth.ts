@@ -85,7 +85,7 @@ export const refreshToken = async (
       await response.json();
     // update session with new tokens
     const updateRes = await fetch(
-      "https://atlas-front-steel.vercel.app/api/auth/update",
+      "https://atlas-front-r6cx6d7l7-yassines-projects-4da58e85.vercel.app/api/auth/update",
       {
         method: "POST",
         body: JSON.stringify({
