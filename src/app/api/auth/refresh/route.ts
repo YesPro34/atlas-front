@@ -4,6 +4,9 @@ import { NextRequest } from "next/server";
 export async function POST(req: NextRequest) {
   console.log("🔄 Auth refresh API route called");
   console.log("🔄 Auth refresh - Request headers:", Object.fromEntries(req.headers.entries()));
+  console.log("🔄 Auth refresh - Cookie header:", req.headers.get('cookie'));
+  console.log("🔄 Auth refresh - Origin:", req.headers.get('origin'));
+  console.log("🔄 Auth refresh - Referer:", req.headers.get('referer'));
   
   try {
     console.log("🔄 Auth refresh - Making request to backend refresh endpoint");

@@ -25,6 +25,7 @@ export async function LogIn(
             headers: {
               "Content-Type": "application/json",
             },
+            credentials: "include",
             body: JSON.stringify(validatedFields.data),
           }
         );
@@ -32,6 +33,9 @@ export async function LogIn(
         if (response.ok) {
           const result = await response.json();
           console.log("🔐 Login - Backend login successful, creating session");
+          console.log("🔐 Login - Response headers:", Object.fromEntries(response.headers.entries()));
+          console.log("🔐 Login - Set-Cookie header:", response.headers.get('set-cookie'));
+          
           // Create session without refresh token (stored in HTTP-only cookie by backend)
           await createSession({
             user: {
