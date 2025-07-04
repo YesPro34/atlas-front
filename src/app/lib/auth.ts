@@ -64,18 +64,10 @@ export const refreshToken = async (
   oldRefreshToken: string
 ) => {
   try {
-    const response = await fetch(
-      `${BACKEND_URL}/auth/refresh`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          refresh: oldRefreshToken,
-        }),
-      }
-    );
+    const response =await fetch(`${BACKEND_URL}/auth/refresh`, {
+      method: "POST",
+      credentials: "include", 
+    });
     if (!response.ok) {
       throw new Error(
         "Failed to refresh token" + response.statusText
@@ -84,16 +76,10 @@ export const refreshToken = async (
     const { accessToken, refreshToken } =
       await response.json();
     // update session with new tokens
-    const updateRes = await fetch(
-      "https://atlas-front-r6cx6d7l7-yassines-projects-4da58e85.vercel.app/api/auth/update",
-      {
-        method: "POST",
-        body: JSON.stringify({
-          accessToken,
-          refreshToken,
-        }),
-      }
-    );
+    const updateRes = await fetch("/api/auth/update", {
+      method: "POST",
+      body: JSON.stringify({ accessToken, refreshToken }),
+    });
     if (!updateRes.ok)
       throw new Error("Failed to update the tokens");
     return accessToken;
