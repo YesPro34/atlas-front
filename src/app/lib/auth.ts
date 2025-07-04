@@ -31,7 +31,7 @@ export async function LogIn(
       
         if (response.ok) {
           const result = await response.json();
-          // TODO: Create The Session For Authenticated User.
+          // Create session without refresh token (stored in HTTP-only cookie by backend)
           await createSession({
             user: {
               id: result.id,
@@ -40,7 +40,6 @@ export async function LogIn(
               bacOption: result.bacOption,
             },
             accessToken: result.accessToken,
-            refreshToken: result.refreshToken,
           });
           if(result.role === "ADMIN"){
               redirect("/dashboard");
@@ -76,10 +75,10 @@ export const refreshToken = async (
     }
     const { accessToken, refreshToken } =
       await response.json();
-    // update session with new tokens
+    // update session with new access token only
     const updateRes = await fetch("/api/auth/update", {
       method: "POST",
-      body: JSON.stringify({ accessToken, refreshToken }),
+      body: JSON.stringify({ accessToken }),
     });
     if (!updateRes.ok)
       throw new Error("Failed to update the tokens");

@@ -14,7 +14,6 @@ export type Session = {
     bacOption: BacOption;
   };
   accessToken: string;
-  refreshToken: string;
 };
 
 const secretKey = process.env.SESSION_SECRET_SECRET!;
@@ -66,10 +65,8 @@ export async function deleteSession() {
 
 export async function updateTokens({
   accessToken,
-  refreshToken,
 }: {
   accessToken: string;
-  refreshToken: string;
 }) {
   const cookie = (await cookies()).get("session")?.value;
   if (!cookie) return null;
@@ -86,7 +83,6 @@ export async function updateTokens({
       ...payload.user,
     },
     accessToken,
-    refreshToken,
   };
 
   await createSession(newPayload);

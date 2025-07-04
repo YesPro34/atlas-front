@@ -14,21 +14,28 @@ export async function GET(req: NextRequest) {
     credentials: "include",
   });
 
-  if (res.status === 401 && session.refreshToken) {
-    // Try to refresh
+  if (res.status === 401) {
+    // Try to refresh - the refresh token is automatically sent via cookies
     const refreshRes = await fetch(`${BACKEND_URL}/auth/refresh`, {
       method: "POST",
       credentials: "include",
     });
+    
+    console.log("Refresh response status:", refreshRes.status);
+    
     if (refreshRes.ok) {
       const { accessToken, refreshToken } = await refreshRes.json();
-      await updateTokens({ accessToken, refreshToken });
+      console.log("Refresh successful, updating tokens");
+      await updateTokens({ accessToken });
       // Retry original request
       res = await fetch(`${BACKEND_URL}/user/mySchools/${bacOption}`, {
         headers: { Authorization: `Bearer ${accessToken}` },
         credentials: "include",
       });
     } else {
+      console.log("Refresh failed, status:", refreshRes.status);
+      const errorText = await refreshRes.text();
+      console.log("Refresh error:", errorText);
       return new Response("Unauthorized", { status: 401 });
     }
   }
