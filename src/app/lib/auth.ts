@@ -31,6 +31,7 @@ export async function LogIn(
       
         if (response.ok) {
           const result = await response.json();
+          console.log("🔐 Login - Backend login successful, creating session");
           // Create session without refresh token (stored in HTTP-only cookie by backend)
           await createSession({
             user: {
@@ -41,6 +42,7 @@ export async function LogIn(
             },
             accessToken: result.accessToken,
           });
+          console.log("✅ Login - Session created, redirecting to:", result.role === "ADMIN" ? "/dashboard" : "/home");
           if(result.role === "ADMIN"){
               redirect("/dashboard");
           }else{
