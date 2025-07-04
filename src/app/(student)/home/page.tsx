@@ -36,7 +36,7 @@ export default function HomePage() {
         return;
       }
 
-      const res = await authFetch(`${BACKEND_URL}/user/mySchools/${bacOption.name}`);
+      const res = await fetch(`/api/user/mySchools/${bacOption.name}`);
       if (!res.ok) throw new Error("Failed to fetch schools");
       const data = await res.json();
       setSchools(data);

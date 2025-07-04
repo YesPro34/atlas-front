@@ -20,12 +20,7 @@ export default function AnalyticsCards() {
     const fetchData = async () => {
       try {
         // get all etudiant
-        const stdRes = await authFetch(`${BACKEND_URL}/user/students`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const stdRes = await fetch("/api/user/students");
 
         // get all ecoles
           const schRes = await authFetch(`${BACKEND_URL}/school`, {

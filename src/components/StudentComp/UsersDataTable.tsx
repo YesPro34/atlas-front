@@ -31,15 +31,8 @@ export default function UsersDataTable({ title, session }: { title: string, sess
 
   const fetchStudents = async () => {
     try {
-      const res = await authFetch(`${BACKEND_URL}/user/students`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
+      const res = await fetch("/api/user/students");
       if (!res.ok) throw new Error("Failed to fetch students");
-
       const data = await res.json();
       setStudents(data);
     } catch (error) {

@@ -107,7 +107,7 @@ const AtlasLandingPage: React.FC = () => {
                   <li className="hover:text-primary cursor-pointer w-full text-center py-2">خدمتنا</li>
                   <li className="hover:text-primary cursor-pointer w-full text-center py-2">باقات</li>
                   <li className="hover:text-primary cursor-pointer w-full text-center py-2">اتصل بنا</li>
-                </ul>
+            </ul>
               </nav>
               <Link href="/login" className="w-full">
                 <Button size="sm" className="bg-[#0ab99d] hover:bg-[#10a58c] text-white text-md px-6 py-6 font-bold cursor-pointer w-full">
@@ -124,12 +124,12 @@ const AtlasLandingPage: React.FC = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-8 items-center text-right">
             <img src="/images/hero/hero-1.png" className="w-full h-auto" />
-            <div>
+          <div>
               <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold leading-relaxed mb-4">
-                لماذا تحتاج إلى توجيه دراسي
-                <br />
-                <span className="text-primary">للحصول على شهادة البكالوريا؟</span>
-              </h1>
+              لماذا تحتاج إلى توجيه دراسي
+              <br />
+              <span className="text-primary">للحصول على شهادة البكالوريا؟</span>
+            </h1>
               <p className="mb-6 text-lg sm:text-2xl">نحن هنا لمساعدتك على تحديد أهدافك التعليمية ومرافقتك في جميع مراحل دراستك.</p>
               <Button size="lg" className="bg-[#0ab99d] hover:bg-[#10a58c] text-white px-6 sm:px-8 py-6 sm:py-7 font-bold w-full sm:w-auto">ابدأ الآن</Button>
             </div>
@@ -203,7 +203,7 @@ const AtlasLandingPage: React.FC = () => {
               <p className="text-gray-600 text-center text-md group-hover:text-white transition-colors duration-300">
                 تستهدف خدمتنا تلاميذ السنة الثانية من البكالوريا والطلبة (ما فوق الباك) الراغبين في مواصلة دراستهم في فرنسا.
               </p>
-            </div>
+              </div>
           </div>
         </div>
       </section>
@@ -239,7 +239,7 @@ const AtlasLandingPage: React.FC = () => {
                 <img src="/images/team/team3.jpeg" alt="Team member 2" className="rounded-xl w-32 sm:w-40 h-40 sm:h-56 object-cover shadow-lg" />
               </div>
               <img src="/images/team/team2.png" alt="Main team" className="rounded-xl w-48 sm:w-64 h-[280px] sm:h-[370px] object-cover shadow-2xl ml-4" />
-            </div>
+          </div>
           </div>
         </div>
       </section>

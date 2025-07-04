@@ -42,11 +42,9 @@ export default function GradesDataTable({ session, title }: { session: Session |
 
   const fetchStudents = async () => {
     try {
-      const response = await authFetch(`${BACKEND_URL}/user/students`);
+      const response = await fetch("/api/user/students");
       if (!response.ok) throw new Error('Failed to fetch students');
       const data = await response.json();
-      console.log("Data", data);
-      console.log
       setStudents(data);
     } catch (error) {
       console.error('Error fetching students:', error);
