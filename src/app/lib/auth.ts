@@ -59,34 +59,4 @@ export async function LogIn(
         }
 }
 
-export const refreshToken = async (
-  oldRefreshToken: string
-) => {
-  try {
-    const response =await fetch(`${BACKEND_URL}/auth/refresh`, {
-      method: "POST",
-      credentials: "include", 
-    });
-    console.log(response);
-    if (!response.ok) {
-      throw new Error(
-        "Failed to refresh token" + response.statusText
-      );
-    }
-    const { accessToken, refreshToken } =
-      await response.json();
-    // update session with new access token only
-    const updateRes = await fetch("/api/auth/update", {
-      method: "POST",
-      body: JSON.stringify({ accessToken }),
-    });
-    if (!updateRes.ok)
-      throw new Error("Failed to update the tokens");
-    return accessToken;
-  } catch (err) {
-    console.error("Refresh Token failed:", err);
-    return null;
-  }
-};
-
-    // IN THE PRODUCION ENV I HAVE TO CHANGE  "http://localhost:3000" WITH PRODUCTION WEB ADDRESS OF MY NEXTJS SERVER
+// IN THE PRODUCION ENV I HAVE TO CHANGE  "http://localhost:3000" WITH PRODUCTION WEB ADDRESS OF MY NEXTJS SERVER

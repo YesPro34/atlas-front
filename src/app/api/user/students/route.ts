@@ -18,11 +18,8 @@ export async function GET(req: NextRequest) {
       credentials: "include",
     });
     
-    console.log("Refresh response status:", refreshRes.status);
-    
     if (refreshRes.ok) {
-      const { accessToken, refreshToken } = await refreshRes.json();
-      console.log("Refresh successful, updating tokens");
+      const { accessToken } = await refreshRes.json();
       await updateTokens({ accessToken });
       // Retry original request
       res = await fetch(`${BACKEND_URL}/user/students`, {
@@ -30,9 +27,6 @@ export async function GET(req: NextRequest) {
         credentials: "include",
       });
     } else {
-      console.log("Refresh failed, status:", refreshRes.status);
-      const errorText = await refreshRes.text();
-      console.log("Refresh error:", errorText);
       return new Response("Unauthorized", { status: 401 });
     }
   }

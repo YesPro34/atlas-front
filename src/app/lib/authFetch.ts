@@ -1,5 +1,5 @@
-import { refreshToken } from "./auth";
 import { getSession } from "./session";
+import { BACKEND_URL } from "./constants";
 
 export interface FetchOptions extends RequestInit {
   headers?: Record<string, string>;
@@ -19,18 +19,27 @@ export const authFetch = async (
   let response = await fetch(url, options);
 
   if (response.status === 401) {
-    console.log(session?.refreshToken);
-    if (!session?.refreshToken)
-      throw new Error("refresh token not found!");
+    // Try to refresh token using HTTP-only cookie
+    const refreshResponse = await fetch(`${BACKEND_URL}/auth/refresh`, {
+      method: 'POST',
+      credentials: 'include',
+    });
 
-    const newAccessToken = await refreshToken(
-      session.refreshToken
-    );
-
-    if (newAccessToken) {
+    if (refreshResponse.ok) {
+      const { accessToken } = await refreshResponse.json();
       
-      options.headers.Authorization = `Bearer ${newAccessToken}`;
+      // Update session with new access token
+      await fetch('/api/auth/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ accessToken }),
+      });
+      
+      // Retry original request with new token
+      options.headers.Authorization = `Bearer ${accessToken}`;
       response = await fetch(url, options);
+    } else {
+      throw new Error("Failed to refresh token");
     }
   }
   return response;
