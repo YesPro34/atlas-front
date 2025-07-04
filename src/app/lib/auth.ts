@@ -68,6 +68,7 @@ export const refreshToken = async (
       method: "POST",
       credentials: "include", 
     });
+    console.log(response);
     if (!response.ok) {
       throw new Error(
         "Failed to refresh token" + response.statusText
